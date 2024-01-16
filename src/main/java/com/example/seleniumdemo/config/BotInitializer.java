@@ -1,6 +1,6 @@
 package com.example.seleniumdemo.config;
 
-import com.example.seleniumdemo.service.TelegramBotService;
+import com.example.seleniumdemo.service.impl.TelegramBotService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;

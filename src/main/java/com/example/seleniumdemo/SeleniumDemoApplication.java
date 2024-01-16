@@ -1,7 +1,8 @@
 package com.example.seleniumdemo;
 
-import com.example.seleniumdemo.service.ParserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.seleniumdemo.service.PharmacyService;
+import com.example.seleniumdemo.service.impl.KataChatService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,14 +10,11 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
+@RequiredArgsConstructor
 public class SeleniumDemoApplication implements CommandLineRunner {
 
-    private final ParserService parserService;
-
-    @Autowired
-    public SeleniumDemoApplication(ParserService parserService) {
-        this.parserService = parserService;
-    }
+    private final KataChatService kataChatService;
+    private final PharmacyService pharmacyService;
 
     public static void main(String[] args) {
         SpringApplication.run(SeleniumDemoApplication.class, args);
@@ -24,7 +22,8 @@ public class SeleniumDemoApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        parserService.loadMessagesPage();
-        parserService.parsePosts();
+//        kataChatService.loadMessagesPage();
+//        kataChatService.parsePosts();
+        pharmacyService.load();
     }
 }
