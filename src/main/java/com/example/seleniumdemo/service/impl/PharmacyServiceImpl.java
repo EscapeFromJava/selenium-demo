@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +43,8 @@ public class PharmacyServiceImpl implements PharmacyService {
 
     @Scheduled(initialDelay = 3 * 1000, fixedDelay = 5 * 60 * 1000)
     public void parse() {
-        log.info("Запуск шедулера в " + LocalDateTime.now());
+        String localDateTime = getLocalDateTimeToString();
+        log.info("Запуск шедулера в " + localDateTime);
         driver.navigate().refresh();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
 
@@ -65,7 +67,9 @@ public class PharmacyServiceImpl implements PharmacyService {
             if (!pharmRecords.contains(curr)) {
                 pharmRecords = newList;
                 String countTitle = driver.findElement(By.xpath("/html/body/div[3]/div/div[1]/div[2]/div[3]/div/p")).getText();
-                telegramBotService.sendMessage(countTitle + "\n\n" + arrayToString(pharmRecords));
+                telegramBotService.sendMessage("Дата обновления данных: " + localDateTime + "\n" +
+                        countTitle + "\n\n" +
+                        arrayToString(pharmRecords));
                 log.info("Сообщение отправлено в телеграмм");
             }
         }
@@ -78,6 +82,10 @@ public class PharmacyServiceImpl implements PharmacyService {
             sb.append(record).append("\n=========\n");
         }
         return sb.toString();
+    }
+
+    private String getLocalDateTimeToString() {
+        return LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"));
     }
 
 }
